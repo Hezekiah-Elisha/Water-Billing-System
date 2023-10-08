@@ -35,7 +35,9 @@ def login():
 
     access_token = create_access_token(identity=user.email)
 
-    return jsonify(access_token=access_token), 200
+    user_info = user_schema.dump(user)
+
+    return jsonify(access_token=access_token, user=user_info), 200
 
 
 @auth.route('/register', methods=['POST'])
