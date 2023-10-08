@@ -1,7 +1,7 @@
 from flask import Flask
 
 from config import config
-from .extensions import db, jwt, cors, ma
+from .extensions import db, jwt, cors, ma, bcrypt
 
 
 def create_app(config_name='default'):
@@ -16,6 +16,10 @@ def create_app(config_name='default'):
     cors.init_app(app)
     db.init_app(app)
     ma.init_app(app)
+    bcrypt.init_app(app)
+
+    from .admin import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint)
 
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
@@ -28,5 +32,14 @@ def create_app(config_name='default'):
 
     from .customer import customer as customer_blueprint
     app.register_blueprint(customer_blueprint)
+
+    from .supervisor import supervisor as supervisor_blueprint
+    app.register_blueprint(supervisor_blueprint)
+
+    from .worker import worker as worker_blueprint
+    app.register_blueprint(worker_blueprint)
+
+    from .notifications import notification as notification_blueprint
+    app.register_blueprint(notification_blueprint)
 
     return app
