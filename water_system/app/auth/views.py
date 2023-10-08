@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify
+from flask import request, jsonify
 from . import auth
 from .models.User import User
 from .models.TokenBlocklist import TokenBlocklist

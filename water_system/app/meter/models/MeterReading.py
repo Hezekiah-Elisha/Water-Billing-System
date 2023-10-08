@@ -19,4 +19,4 @@ class MeterReading(db.Model):
         default=db.func.current_timestamp())
 
     # Define the one-to-one relationship with Meter
-    meter = db.relationship('Meter', uselist=False, backref='meter_reading')
+    meter = db.relationship('Meter', uselist=False, backref='MeterReading')

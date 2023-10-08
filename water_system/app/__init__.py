@@ -26,4 +26,7 @@ def create_app(config_name='default'):
     from .meter import meter as meter_blueprint
     app.register_blueprint(meter_blueprint)
 
+    from .customer import customer as customer_blueprint
+    app.register_blueprint(customer_blueprint)
+
     return app
