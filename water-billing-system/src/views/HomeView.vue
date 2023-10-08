@@ -5,6 +5,7 @@
       <input v-model="email" type="email" placeholder="Email" required>
       <input v-model="password" type="password" placeholder="Password" required>
       <button type="submit">Login</button>
+      <p class="text-danger">{{ error }}</p>
     </form>
 </div>
 </template>
@@ -27,7 +28,8 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      error: ''
     }
   },
   methods: {
@@ -37,13 +39,22 @@ export default {
         password: this.password
       })
       .then(response => {
-        console.log(response.data)
-        localStorage.setItem('token', response.data['access_token'])
-        // auth.setToken(response.data['access_token'])
-        // auth.setUser(response.data['user'])
-        this.$router.push('/dashboard')
-      }).then(error => {
-        console.log(error)
+        // console.log(response.data)
+        if (response.status === 200) {
+          // console.log('success')
+          localStorage.setItem('token', response.data['access_token'])
+          // auth.setToken(response.data['access_token'])
+          // auth.setUser(response.data['user'])
+          this.$router.push('/dashboard')
+        }
+        else if (response.status === 400) {
+          console.log('Note: Email or Password is incorrect')
+          this.error = 'Email or Password is incorrect'
+        }
+
+      }).catch(error => {
+        // console.log(error.code)
+        this.error = 'Email or Password is incorrect, error code: ' + error.code
       });
     }
   }

@@ -14,6 +14,8 @@
     <div v-else>
         You are a user
     </div>
+
+    <button @click="logout" class="btn btn-outline-danger">Logout</button>
 </div>
 
 <div></div>
@@ -49,13 +51,32 @@ export default {
             .then(response => {
                 // console.log(response.data)
                 this.user = response.data
-            }).then(error => {
-                console.log(error)
+            }).catch(error => {
+                console.log(error.code)
+                this.$router.push('/')
             });
         },
         formatDateTime(dateString) {
             const mydate = new Date(dateString);
             return `${mydate.toLocaleDateString()} ${mydate.toLocaleTimeString()}`;        
+        },
+        logout() {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${this.token}`
+                }
+            };
+            axios.delete('http://localhost:7000/auth/logout', config)
+            .then(response => {
+                // console.log(response.data)
+                if (response.status === 200) {
+                    // console.log('success')
+                    localStorage.removeItem('token')
+                    this.$router.push('/')
+                }
+            }).catch(error => {
+                console.log(error.code)
+            });
         }
     },
     mounted() {

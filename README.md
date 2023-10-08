@@ -22,6 +22,3 @@ To get the project .......
  ```bash
  git clone git@github.com:Hezekiah-Elisha/Water-Billing-System.git
  ```
-
- 
- 
