@@ -1,4 +1,18 @@
 <template>
+<nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/test">Test</router-link>
+  </nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Dashboard</h1>
+        </div>
+    </div>
+    
+</div>
 
 <div class="video">
 </div>
@@ -8,8 +22,8 @@
     email: {{ user.email }} <br>
     role: {{ user.role }} <br>
     created at: {{ formatDateTime(user.created_at) }} <br>
-    <div v-if="user.role == 'admin'">
-        You are an admin
+    <div v-if="user.role == 'supervisor'">
+        You are a Supervisor
     </div>
     <div v-else>
         You are a user
