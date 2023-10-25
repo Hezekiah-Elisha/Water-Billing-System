@@ -6,6 +6,7 @@ from .extensions import db, jwt, cors, ma, bcrypt
 
 def create_app(config_name='default'):
     app = Flask(__name__)
+    app.url_map.strict_slashes = False
 
     # config_name = 'development'
 
@@ -13,7 +14,7 @@ def create_app(config_name='default'):
     config[config_name].init_app(app)
 
     jwt.init_app(app)
-    cors.init_app(app)
+    cors.init_app(app, supports_credentials=True)
     db.init_app(app)
     ma.init_app(app)
     bcrypt.init_app(app)

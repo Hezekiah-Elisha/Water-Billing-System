@@ -5,9 +5,7 @@ class Supervisor(db.Model):
     __tablename__ = 'supervisors'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    name = db.Column(db.String, nullable=False)
     phone = db.Column(db.String, nullable=False, unique=True)
-    email = db.Column(db.String, nullable=False, unique=True)
     location = db.Column(db.String, nullable=False)
     created_at = db.Column(
         db.DateTime,
@@ -18,16 +16,14 @@ class Supervisor(db.Model):
     # create a one to many relationship with the workers table
     workers = db.relationship('Worker', backref='Supervisor', lazy=True)
 
-    def __init__(self, user_id, name, phone, email, location):
-        self.user = user_id
-        self.name = name
+    def __init__(self, user_id, phone, location):
+        self.user_id= user_id
         self.phone = phone
-        self.email = email
         self.location = location
 
 
     def __repr__(self):
-        return f'<Supervisor {self.name}>'
+        return f'<Supervisor {self.phone}>'
     
 
     def delete(self):
@@ -41,7 +37,7 @@ class Supervisor(db.Model):
         supervisor = Supervisor.query.filter_by(phone=self.phone).first()
         if supervisor:
             return False
-        supervisor = Supervisor.query.filter_by(email=self.email).first()
+        supervisor = Supervisor.query.filter_by(id=self.id).first()
         if supervisor:
             return False
         db.session.add(self)
@@ -67,17 +63,14 @@ class Supervisor(db.Model):
     @staticmethod
     def get_supervisor_by_phone(phone):
         return Supervisor.query.filter_by(phone=phone).first()
-    
-    @staticmethod
-    def get_supervisor_by_email(email):
-        return Supervisor.query.filter_by(email=email).first()
-    
-    
-    @staticmethod
-    def get_supervisor_by_name(name):
-        return Supervisor.query.filter_by(name=name).first()
-    
+
+
     @staticmethod
     def get_supervisor_by_location(location):
         return Supervisor.query.filter_by(location=location).first()
             
+
+    @staticmethod
+    def get_supervisor_by_user_id(user_id):
+        return Supervisor.query.filter_by(user_id=user_id).first()
+

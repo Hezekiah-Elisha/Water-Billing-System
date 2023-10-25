@@ -20,3 +20,33 @@ class Meter(db.Model):
         'MeterReading', uselist=False, backref='Meter')
     # Define the one-to-one relationship with Customer
     customer = db.relationship('Customer', uselist=False, backref='Meter')
+
+    def __repr__(self):
+        return '<Meter {}>'.format(self.id)
+    
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+        return self.id
+    
+    def update(self):
+        db.session.commit()
+        return self.id
+    
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        return self.id
+    
+
+    @staticmethod
+    def get_all():
+        return Meter.query.all()
+    
+    @staticmethod
+    def get_by_id(id):
+        return Meter.query.get(id)
+    
+    @staticmethod
+    def get_by_customer_id(customer_id):
+        return Meter.query.filter_by(customer_id=customer_id).all()

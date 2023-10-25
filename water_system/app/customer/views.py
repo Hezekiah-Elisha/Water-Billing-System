@@ -2,6 +2,7 @@ from flask import request, jsonify
 from . import customer
 from .models.Customer import Customer
 from .models.MaCustomer import customer_schema, customers_schema
+from werkzeug.utils import secure_filename
 
 @customer.route('/', methods=['GET'])
 def get_all_customers():

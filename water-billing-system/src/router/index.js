@@ -32,6 +32,16 @@ const routes = [
     name: 'notFound',
     component: () => import('../views/404View.vue')
   }
+  ,{
+    path: '/users',
+    name: 'users',
+    component: () => import('../views/UsersView.vue')
+  },
+  {
+    path: '/supervisors',
+    name: 'supervisors',
+    component: () => import('../views/SupervisorView.vue')
+  }
 ]
 
 const router = createRouter({

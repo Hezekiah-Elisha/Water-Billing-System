@@ -48,6 +48,13 @@ class User(db.Model):
     @staticmethod
     def get_all_users():
         return User.query.all()
+    
+
+    @staticmethod
+    def delete_all_users():
+        db.session.query(User).delete()
+        db.session.commit()
+        return True
 
     @staticmethod
     def get_user_by_id(id):
@@ -64,10 +71,6 @@ class User(db.Model):
     @staticmethod
     def get_user_password_by_email(email):
         return User.query.filter_by(email=email).first().password
-
-    @staticmethod
-    def get_user_by_role(role):
-        return User.query.filter_by(role=role).all()
 
     # get users with same role
     @staticmethod
@@ -101,3 +104,9 @@ class User(db.Model):
     @staticmethod
     def get_user_role_by_email(email):
         return User.query.filter_by(email=email).first().role
+
+
+    # return username when given id
+    @staticmethod
+    def get_user_username_by_id(id):
+        return User.query.filter_by(id=id).first().username

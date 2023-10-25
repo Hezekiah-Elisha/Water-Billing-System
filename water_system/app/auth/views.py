@@ -100,6 +100,12 @@ def get_all_users():
     return jsonify(result)
 
 
+@auth.route('/users', methods=['DELETE'])
+def delete_all_users():
+    User.delete_all_users()
+    return jsonify(message='All users deleted successfully'), 200
+
+
 @auth.route('/protected', methods=['GET'])
 @jwt_required()
 def protected():
@@ -144,7 +150,6 @@ def update_user(id):
 
 
 @auth.route('/users/<int:id>', methods=['DELETE'])
-@jwt_required()
 def delete_user(id):
     user = User.get_user_by_id(id)
     if not user:
@@ -227,7 +232,6 @@ def update_user_email(id):
 
 
 @auth.route('/users/<int:id>/username', methods=['GET'])
-@jwt_required()
 def get_user_username(id):
     user = User.get_user_by_id(id)
     if not user:
@@ -289,3 +293,18 @@ def verify_user(verification_code):
 @admin_required
 def for_admins_only():
     return jsonify(message='Admins only!'), 200
+
+
+@auth.route('/for-users-only', methods=['GET'])
+@jwt_required()
+def for_users_only():
+    return jsonify(message='Users only!'), 200
+
+
+@auth.route('/users/role/<string:role>', methods=['GET'])
+def get_user_by_role(role):
+    users = User.get_users_by_role(role)
+    if not users:
+        return jsonify(message='Users in role not found'), 404
+    result = users_schema.dump(users)
+    return jsonify(result)
