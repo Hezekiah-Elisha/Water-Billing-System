@@ -1,5 +1,5 @@
 from flask import request, jsonify
-from . import auth
+from . import auth, users
 from .models.User import User
 from .models.TokenBlocklist import TokenBlocklist
 from .models.MaUser import user_schema, users_schema
@@ -40,7 +40,8 @@ def login():
     return jsonify(access_token=access_token, user=user_info), 200
 
 
-@auth.route('/register', methods=['POST'])
+# register user
+@auth.route('/', methods=['POST'])
 def register():
     username = request.json.get('username', None)
     email = request.json.get('email', None)
@@ -93,15 +94,20 @@ def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
     return token is not None
 
 
-@auth.route('/users', methods=['GET'])
+@users.route('/', methods=['GET'])
 def get_all_users():
     users = User.get_all_users()
+    if not users:
+        return jsonify(message='No users found'), 404
     result = users_schema.dump(users)
     return jsonify(result)
 
 
-@auth.route('/users', methods=['DELETE'])
+@users.route('/', methods=['DELETE'])
 def delete_all_users():
+    users = User.get_all_users()
+    if not users:
+        return jsonify(message='No users found'), 404
     User.delete_all_users()
     return jsonify(message='All users deleted successfully'), 200
 
@@ -113,7 +119,7 @@ def protected():
     return jsonify(logged_in_as=current_user), 200
 
 
-@auth.route('/users/<int:id>', methods=['GET'])
+@users.route('/<int:id>', methods=['GET'])
 @jwt_required()
 def get_user_by_id(id):
     user = User.get_user_by_id(id)
@@ -123,7 +129,7 @@ def get_user_by_id(id):
     return jsonify(result)
 
 
-@auth.route('/users/<int:id>', methods=['PUT'])
+@users.route('<int:id>', methods=['PUT'])
 @jwt_required()
 def update_user(id):
     user = User.get_user_by_id(id)
@@ -149,7 +155,7 @@ def update_user(id):
     return jsonify(message='User updated successfully'), 200
 
 
-@auth.route('/users/<int:id>', methods=['DELETE'])
+@users.route('/<int:id>', methods=['DELETE'])
 def delete_user(id):
     user = User.get_user_by_id(id)
     if not user:
@@ -158,7 +164,7 @@ def delete_user(id):
     return jsonify(message='User deleted successfully'), 200
 
 
-@auth.route('/users/<int:id>/password', methods=['PUT'])
+@users.route('/<int:id>/password', methods=['PUT'])
 @jwt_required()
 def update_user_password(id):
     user = User.get_user_by_id(id)
@@ -177,7 +183,7 @@ def update_user_password(id):
     return jsonify(message='Password updated successfully'), 200
 
 
-@auth.route('/users/<int:id>/role', methods=['PUT'])
+@users.route('/<int:id>/role', methods=['PUT'])
 @jwt_required()
 def update_user_role(id):
     user = User.get_user_by_id(id)
@@ -195,7 +201,7 @@ def update_user_role(id):
     return jsonify(message='Role updated successfully'), 200
 
 
-@auth.route('/users/<int:id>/username', methods=['PUT'])
+@users.route('/<int:id>/username', methods=['PUT'])
 @jwt_required()
 def update_user_username(id):
     user = User.get_user_by_id(id)
@@ -213,7 +219,7 @@ def update_user_username(id):
     return jsonify(message='Username updated successfully'), 200
 
 
-@auth.route('/users/<int:id>/email', methods=['PUT'])
+@users.route('/<int:id>/email', methods=['PUT'])
 @jwt_required()
 def update_user_email(id):
     user = User.get_user_by_id(id)
@@ -231,7 +237,7 @@ def update_user_email(id):
     return jsonify(message='Email updated successfully'), 200
 
 
-@auth.route('/users/<int:id>/username', methods=['GET'])
+@users.route('/<int:id>/username', methods=['GET'])
 def get_user_username(id):
     user = User.get_user_by_id(id)
     if not user:
@@ -239,7 +245,7 @@ def get_user_username(id):
     return jsonify(username=user.username), 200
 
 
-@auth.route('/users/<int:id>/email', methods=['GET'])
+@users.route('/<int:id>/email', methods=['GET'])
 @jwt_required()
 def get_user_email(id):
     user = User.get_user_by_id(id)
@@ -248,7 +254,7 @@ def get_user_email(id):
     return jsonify(email=user.email), 200
 
 
-@auth.route('/users/<int:id>/role', methods=['GET'])
+@users.route('/<int:id>/role', methods=['GET'])
 @jwt_required()
 def get_user_role(id):
     user = User.get_user_by_id(id)
@@ -257,7 +263,7 @@ def get_user_role(id):
     return jsonify(role=user.role), 200
 
 
-@auth.route('/users/@<string:username>', methods=['GET'])
+@users.route('/@<string:username>', methods=['GET'])
 @jwt_required()
 def get_user_by_username(username):
     user = User.get_user_by_username(username)
@@ -280,7 +286,7 @@ def get_user_profile():
 # verify email
 
 
-@auth.route('/users/<string:verification_code>/verify', methods=['GET'])
+@users.route('/<string:verification_code>/verify', methods=['GET'])
 def verify_user(verification_code):
     user = User.verify_user(verification_code)
     if not user:

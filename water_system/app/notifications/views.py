@@ -34,3 +34,40 @@ def create():
     notification.save()
     result = notification_schema.dump(notification)
     return jsonify(result), 201
+
+
+@notification.route('/<int:id>', methods=['GET'])
+def get_notification(id):
+    notification = Notification.get_notification_by_id(id)
+    if not notification:
+        return jsonify(message='Notification not found'), 404
+    result = notification_schema.dump(notification)
+    return jsonify(result), 200
+
+
+@notification.route('/<int:id>', methods=['PUT'])
+def update_notification(id):
+    req_data = request.get_json()
+    notification = Notification.get_notification_by_id(id)
+    if not notification:
+        return jsonify(message='Notification not found'), 404
+    if not req_data:
+        return jsonify(message='No input data provided'), 400
+    
+    notification.user_id = req_data['user_id']
+    notification.type = req_data['type']
+    notification.date = datetime.strptime(req_data['date'], '%Y-%m-%d %H:%M:%S')
+    notification.message = req_data['message']
+    notification.viewed = req_data['viewed']
+    notification.update()
+    result = notification_schema.dump(notification)
+    return jsonify(result), 200
+
+
+@notification.route('/<int:id>', methods=['DELETE'])
+def delete_notification(id):
+    notification = Notification.get_notification_by_id(id)
+    if not notification:
+        return jsonify(message='Notification not found'), 404
+    notification.delete()
+    return jsonify(message='Notification deleted'), 200

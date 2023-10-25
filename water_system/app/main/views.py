@@ -3,7 +3,7 @@ from flask import jsonify, request
 
 
 @main.route('/')
-def hello_world():
+def home():
     return jsonify(message='Welcome to the Water Billing System API')
 
 

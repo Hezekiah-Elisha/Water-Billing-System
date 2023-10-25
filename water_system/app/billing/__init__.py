@@ -1,5 +1,5 @@
 from flask import Blueprint
 
-billing = Blueprint('billing', __name__, url_prefix='/billing')
+bill = Blueprint('bill', __name__, url_prefix='/bills')
 
 from . import views

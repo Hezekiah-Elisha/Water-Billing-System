@@ -1,5 +1,5 @@
 from flask import jsonify, request
-from . import meter
+from . import meter, readings
 from flask_jwt_extended import jwt_required
 from ..decorators import admin_required, supervisor_required, worker_required
 from .models.Meter import Meter
@@ -44,7 +44,7 @@ meter class routes
 """
 @meter.route('/', methods=['GET'])
 def get_all_meters():
-    meters = Meter.get_all_meters()
+    meters = Meter.get_all()
     if not meters:
         return jsonify(message='No meters found'), 404
     result = meters_schema.dump(meters)
@@ -78,10 +78,19 @@ def create_meter():
     return jsonify(result), 201
 
 
+@meter.route('/<int:meter_id>', methods=['GET'])
+def get_meter_by_id(meter_id):
+    meter = Meter.get_by_id(meter_id)
+    if not meter:
+        return jsonify(message='No meter found'), 404
+    result = meter_schema.dump(meter)
+    return jsonify(result), 200
+
+
 """
 meter reading class routes
 """
-@meter.route('/reading', methods=['GET'])
+@readings.route('/', methods=['GET'])
 def get_all_meter_readings():
     meter_readings = MeterReading.get_all()
     if not meter_readings:
@@ -90,7 +99,7 @@ def get_all_meter_readings():
     return jsonify(result), 200
 
 
-@meter.route('/reading', methods=['POST'])
+@readings.route('/', methods=['POST'])
 def create_meter_reading():
     meter_id = request.form['meter_id']
     worker_id = request.form['worker_id']
@@ -123,14 +132,3 @@ def create_meter_reading():
     result = meter_reading_schema.dump(meter_reading)
 
     return jsonify(result=result, message="meter reading added successfull"), 201
-
-    # return jsonify(
-    #     meter_id=meter_id,
-    #     worker_id=worker_id,
-    #     reading_gps_coordinates=reading_gps_coordinates,
-    #     meter_status=meter_status,
-    #     reading_image_name=name,
-    #     reading_date=reading_date,
-    #     reading_value=reading_value,
-    #     comments=comments
-    # ), 201
