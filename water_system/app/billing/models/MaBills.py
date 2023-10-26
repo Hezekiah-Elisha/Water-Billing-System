@@ -9,7 +9,7 @@ ma = ma()
 class BillSchema(ma.Schema):
     class Meta:
         model = Bill
-        fields = ('id', 'amount', 'bill_date', 'bill_number', 'bill_status', 'created_at')
+        fields = ('id', 'meter_id', 'units', 'amount','status', 'created_at')
 
         _links = ma.Hyperlinks({
             'self': ma.URLFor('bill_details', values=dict(id='<id>')),

@@ -12,6 +12,10 @@ from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
 
 
+now = datetime.now()
+current_month = now.month
+current_year = now.year
+
 MAX_CONTENT_LENGTH = 4 * 1024 * 1024
 
 allowed_extensions = {'jpg', 'png'}
@@ -127,8 +131,44 @@ def create_meter_reading():
         comments=comments
     )
 
-    meter_reading.save()
+    info = meter_reading.save()
 
-    result = meter_reading_schema.dump(meter_reading)
+    # result = meter_reading_schema.dump(meter_reading)
 
-    return jsonify(result=result, message="meter reading added successfull"), 201
+    return jsonify(result=info), 201
+
+
+@readings.route('/<int:meter_id>', methods=['GET'])
+def get_meter_readings(meter_id):
+    meter_readings = MeterReading.get_by_meter_id(meter_id)
+    if not meter_readings:
+        return jsonify(message='No meter readings found'), 404
+    result = meter_readings_schema.dump(meter_readings)
+    return jsonify(result), 200
+
+
+@readings.route('/<int:meter_id>/<int:year>/<int:month>', methods=['GET'])
+def get_meter_readings_by_month(meter_id, year, month):
+    meter_readings = MeterReading.get_by_meter_id_this_month(meter_id, month, year)
+    if not meter_readings:
+        return jsonify(message='No meter readings found'), 404
+    result = meter_readings_schema.dump(meter_readings)
+    return jsonify(result), 200
+
+
+@readings.route('/reading_value/<int:meter_id>/<int:year>/<int:month>', methods=['GET'])
+def get_meter_reading_value(meter_id, year, month):
+    meter_readings = MeterReading.get_reading_value_given_month(meter_id, month, year)
+    if not meter_readings:
+        return jsonify(message='No meter readings found'), 404
+
+    return jsonify(reading_value=meter_readings), 200
+
+
+@readings.route('/units/<int:meter_id>/<int:year>/<int:month>', methods=['GET'])
+def units(meter_id, year, month):
+    units = MeterReading.get_reading_units_given_month(meter_id, month, year)
+    if not units:
+        return jsonify(message='No meter readings found'), 404
+    return jsonify(units=units), 200
+
