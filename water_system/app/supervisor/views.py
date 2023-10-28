@@ -38,3 +38,12 @@ def create_supervisor():
     supervisor_info = supervisor_schema.dump(info)
     
     return jsonify(message='Supervisor created successfully', supervisor=supervisor_info), 201
+
+
+@supervisor.route('/<int:user_id>', methods=['GET'])
+def get_supervisor(user_id):
+    supervisor = Supervisor.get_supervisor_by_user_id(user_id)
+    if not supervisor:
+        return jsonify(message='Supervisor not found', isThere=False), 404
+    result = supervisor_schema.dump(supervisor)
+    return jsonify(supervisor=result, isThere=True), 200

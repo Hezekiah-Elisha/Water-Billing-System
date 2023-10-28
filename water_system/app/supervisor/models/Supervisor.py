@@ -40,6 +40,9 @@ class Supervisor(db.Model):
         supervisor = Supervisor.query.filter_by(id=self.id).first()
         if supervisor:
             return False
+        supervisor = Supervisor.query.filter_by(user_id=self.user_id).first()
+        if supervisor:
+            return False
         db.session.add(self)
         db.session.commit()
         return self

@@ -69,8 +69,12 @@ def register():
 
     if not feedback:
         return jsonify(message='User already exists'), 400
+    
+    # get all users
+    users = User.get_all_users()
+    result = users_schema.dump(users)
 
-    return jsonify(message='User created successfully'), 201
+    return jsonify(message='User created successfully', users=result), 201
 
 
 @auth.route("/logout", methods=["DELETE"])
@@ -120,7 +124,7 @@ def protected():
 
 
 @users.route('/<int:id>', methods=['GET'])
-@jwt_required()
+# @jwt_required()
 def get_user_by_id(id):
     user = User.get_user_by_id(id)
     if not user:
@@ -129,7 +133,7 @@ def get_user_by_id(id):
     return jsonify(result)
 
 
-@users.route('<int:id>', methods=['PUT'])
+@users.route('/<int:id>', methods=['PUT'])
 @jwt_required()
 def update_user(id):
     user = User.get_user_by_id(id)
@@ -161,7 +165,11 @@ def delete_user(id):
     if not user:
         return jsonify(message='User not found'), 404
     user.delete()
-    return jsonify(message='User deleted successfully'), 200
+
+    # get all users
+    users = User.get_all_users()
+    result = users_schema.dump(users)
+    return jsonify(message='User deleted successfully', users = result), 200
 
 
 @users.route('/<int:id>/password', methods=['PUT'])
@@ -273,7 +281,7 @@ def get_user_by_username(username):
     return jsonify(result)
 
 
-@auth.route('/user/profile', methods=['GET'])
+@users.route('/profile', methods=['GET'])
 @jwt_required()
 def get_user_profile():
     email = get_jwt_identity()
@@ -282,6 +290,16 @@ def get_user_profile():
         return jsonify(message='User not found'), 404
     result = user_schema.dump(user)
     return jsonify(result)
+
+
+@users.route('/username', methods=['GET'])
+@jwt_required()
+def get_username():
+    email = get_jwt_identity()
+    username = User.get_username(email)
+    if not username:
+        return jsonify(message='User not found'), 404
+    return jsonify(username=username), 200
 
 # verify email
 
@@ -309,6 +327,15 @@ def for_users_only():
 
 @auth.route('/users/role/<string:role>', methods=['GET'])
 def get_user_by_role(role):
+    users = User.get_users_by_role(role)
+    if not users:
+        return jsonify(message='Users in role not found'), 404
+    result = users_schema.dump(users)
+    return jsonify(result)
+
+
+@users.route('/role/<string:role>', methods=['GET'])
+def get_users_by_role(role):
     users = User.get_users_by_role(role)
     if not users:
         return jsonify(message='Users in role not found'), 404

@@ -1,27 +1,22 @@
 <template>
-<nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/test">Test</router-link>
-  </nav>
 
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Dashboard</h1>
-        </div>
-    </div>
-    
-</div>
 
-<div class="video">
-</div>
+
+<!-- <div class="video">
+</div> -->
+<h2>
+    Welcome to the dashboard
+</h2>
+<hr>
+
+
 
 <div>
-    name : {{ user.username }} <br>
-    email: {{ user.email }} <br>
-    role: {{ user.role }} <br>
-    created at: {{ formatDateTime(user.created_at) }} <br>
+    <img src="@/assets/male-profile-image-placeholder.png" alt="" class="profile-img">
+        <p>name : {{ user.username }} </p>
+        <p>email: {{ user.email }} </p>
+        <p>role: {{ user.role }} </p>
+        <p>created at: {{ formatDateTime(user.created_at) }} </p>
     <div v-if="user.role == 'supervisor'">
         You are a Supervisor
     </div>
@@ -29,10 +24,10 @@
         You are a user
     </div>
 
-    <button @click="logout" class="btn btn-outline-danger">Logout</button>
+
+    <button @click="logout" class="btn btn-outline-danger"> <i class="bi bi-box-arrow-right"></i> Logout</button>
 </div>
 
-<div></div>
 
 </template>
 
@@ -49,30 +44,28 @@ export default {
     data() {
         return {
             token: localStorage.getItem('token'),
-            user: {}
-        }
+            user: {},
+        };
     },
     methods: {
         getProfile() {
-
             const config = {
                 headers: {
                     Authorization: `Bearer ${this.token}`
                 }
             };
-
-            axios.get('http://localhost:7000/auth/user/profile', config)
-            .then(response => {
+            axios.get('http://localhost:7000/auth/users/profile', config)
+                .then(response => {
                 // console.log(response.data)
-                this.user = response.data
+                this.user = response.data;
             }).catch(error => {
-                console.log(error.code)
-                this.$router.push('/')
+                console.log(error.code);
+                this.$router.push('/login');
             });
         },
         formatDateTime(dateString) {
             const mydate = new Date(dateString);
-            return `${mydate.toLocaleDateString()} ${mydate.toLocaleTimeString()}`;        
+            return `${mydate.toLocaleDateString()} ${mydate.toLocaleTimeString()}`;
         },
         logout() {
             const config = {
@@ -81,27 +74,36 @@ export default {
                 }
             };
             axios.delete('http://localhost:7000/auth/logout', config)
-            .then(response => {
+                .then(response => {
                 // console.log(response.data)
                 if (response.status === 200) {
                     // console.log('success')
-                    localStorage.removeItem('token')
-                    this.$router.push('/')
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    this.$router.push('/');
                 }
             }).catch(error => {
-                console.log(error.code)
+                console.log(error.code);
             });
         }
     },
     mounted() {
-        this.getProfile()
-        this.formatDateTime()
-    }
+        this.getProfile();
+        this.formatDateTime();
+    },
 }
 
 </script>
 
 <style scoped>
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    /* margin: 0 auto; */
+    display: block;
+}
 
 .video:empty {
   width: 315px;

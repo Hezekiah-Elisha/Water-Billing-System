@@ -1,13 +1,6 @@
 <template>
-  <div class="home container">
-    <form @submit.prevent="submit">
-      <h2>Welcome to the Water Billing System</h2>
-      <input v-model="email" type="email" placeholder="Email" required>
-      <input v-model="password" type="password" placeholder="Password" required>
-      <button type="submit">Login</button>
-      <p class="text-danger">{{ error }}</p>
-    </form>
-</div>
+  Welcome
+
 </template>
 
 

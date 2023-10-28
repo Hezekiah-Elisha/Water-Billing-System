@@ -1,11 +1,33 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TestView from '../views/TestView.vue'
+import OneSupervisorViewVue from '@/views/OneSupervisorView.vue';
+
+
+function guardMyRoute (to, from, next){
+  //this route requires auth, check if logged in
+  //if not, redirect to login page
+  var isAuthenticated = false;
+
+  if (localStorage.getItem('token') != null){
+    isAuthenticated = true;
+  } else {
+    isAuthenticated = false;
+  }
+
+  if(isAuthenticated){
+    next() //allow to enter route
+  }else{
+    next('/login') //go to '/login';
+  }
+}
+
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
+    // beforeEnter: guardMyRoute,
     component: HomeView
   },
   {
@@ -22,8 +44,9 @@ const routes = [
     component: TestView
   },
   {
-    path: '/dashboard',
+    path: '/',
     name: 'dashboard',
+    beforeEnter: guardMyRoute,
     component: () => import('../views/DashboardView.vue')
   }
   ,
@@ -40,7 +63,19 @@ const routes = [
   {
     path: '/supervisors',
     name: 'supervisors',
+    beforeEnter: guardMyRoute,
     component: () => import('../views/SupervisorView.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue')
+  },
+  {
+    path: '/supervisor/:id',
+    name: 'supervisor',
+    beforeEnter: guardMyRoute,
+    component: OneSupervisorViewVue
   }
 ]
 

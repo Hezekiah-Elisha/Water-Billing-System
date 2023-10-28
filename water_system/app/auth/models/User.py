@@ -110,3 +110,7 @@ class User(db.Model):
     @staticmethod
     def get_user_username_by_id(id):
         return User.query.filter_by(id=id).first().username
+    
+    @staticmethod
+    def get_username(email):
+        return User.query.filter_by(email=email).first().username

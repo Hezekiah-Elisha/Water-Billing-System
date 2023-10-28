@@ -1,13 +1,43 @@
 <template>
     <div class="container">
-        <h1>Supervisor View</h1>
-        <h2>Create Supervisor</h2>
+        <h2>Available Supervisors</h2>
+
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>role</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="supervisor in supervisors" :key="supervisor.id">
+                    <td>{{ supervisor.username }}</td>
+                    <td>{{ supervisor.email }}</td>
+                    <td>{{ supervisor.role }}</td>
+                    <td>
+                        <router-link
+                            :to="{ name: 'supervisor', params: { id: supervisor.id } }"
+                            class="btn btn-outline-primary">
+                            Edit profile
+                        </router-link>
+
+                        <button @click="deleteSupervisor(supervisor.id)"
+                            class="btn btn-outline-danger">
+                            <i class="bi bi-trash2"></i>Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
 
         <div class="supervisor container">
             <form @submit.prevent="submit">
                 <select v-model="user_id" name="" id="">
                     <option value="" selected>Select User</option>
-                    <option v-for="user in users" :key="user.id" :value="user.id"> {{ user.id}}</option>
                 </select>
                 <input v-model="phone" type="number" placeholder="Phone Number" min="0" max="0800000000">
                 <input v-model="location" type="text" placeholder="location">
@@ -17,7 +47,6 @@
             </form>
         </div>
         <div>
-            <h2>Available Supervisors</h2>
         </div>
     </div>
 </template>
@@ -28,14 +57,17 @@ import axios from 'axios'
 
 export default {
     name: 'SupervisorView',
+
     data() {
         return {
-            users: [],
+            supervisors: [],
             user_id: '',
             phone: '',
             location: '',
             error: '',
             success: '',
+            isThere: false,
+            supervisorModal: false,
         }
     },
     methods: {
@@ -61,8 +93,18 @@ export default {
             })
 
         },
-        getUsername(id) {
-            axios.get('http://localhost:7000/auth/users/' + id+'/username')
+        loadUsers() {
+            axios
+                .get('http://localhost:7000/auth/users/role/supervisor')
+                .then(response => {
+                this.supervisors = response.data;
+                })
+                .catch(error => {
+                console.log(error);
+                });
+        },
+        getSupervisors() {
+            axios.get('http://localhost:7000/auth/users/role/supervisor')
                 .then(response => {
                     console.log(response.data['username'])
                     return response.data['username']
@@ -71,21 +113,26 @@ export default {
                     console.log(error)
                 })
         },
+        completeSupervisor(user_id) {
+            axios.post('http://localhost:7000/supervisors/'+user_id,{
+                username: this.username,
+                email: this.email,
+                password: this.password,
+                role: 'supervisor'
+            })
+            .then(response => {
+                this.users = response.data('users')
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        },
     },
     mounted(){
-        axios.get('http://localhost:7000/auth/users/role/supervisor')
-                .then(response => {
-                    this.users = response.data
-                })
-                .catch(error => {
-                    console.log(error)
-                })
+        this.loadUsers()
+
     },
 
-
-    // created() {
-    //     this.getUsername()
-    // }
 }
 
 </script>
