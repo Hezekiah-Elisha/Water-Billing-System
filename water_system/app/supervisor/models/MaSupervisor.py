@@ -9,7 +9,7 @@ ma = ma()
 class SupervisorSchema(ma.Schema):
     class Meta:
         model = Supervisor
-        fields = ('id', 'name', 'email', 'phone', 'created_at')
+        fields = ('id', 'location', 'email', 'phone', 'created_at')
 
         _links = ma.Hyperlinks({
             'self': ma.URLFor('supervisor_details', values=dict(id='<id>')),
