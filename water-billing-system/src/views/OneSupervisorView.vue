@@ -34,11 +34,17 @@
                 </tr>
             </tbody>
         </table>
+
+        <h3>Workers</h3>
+        <hr>
+        <div class="row">
+            <WorkerTileComponent v-for="worker in workers" :key="worker.id" :user="worker" class="col-md-4"/>
+        </div>
     </div>
 
     <div v-else>
         <h3>Complete Supervisor Registration</h3>
-        <button class="btn action" @click="supervisorModal = true" > <i class="bi bi-pencil-fill"></i> Create Supervisor</button>
+        <button class="btn action" @click="supervisorModal = true" > <i class="bi bi-pencil-fill"></i>Complete Supervisor Registration</button>
         <WorkerComponent v-if="supervisorModal" @close="supervisorModal = false">
             <h2>Create Supervisor</h2>
             <hr>
@@ -58,11 +64,13 @@
 <script>
 import axios from 'axios'
 import WorkerComponent from '@/components/WorkerComponent.vue'
+import WorkerTileComponent from '@/components/WorkerTileComponent.vue'
 
 export default {
     name : 'OneSupervisorView',
     components: {
-        WorkerComponent
+        WorkerComponent,
+        WorkerTileComponent
     },
     data() {
         return {
@@ -183,5 +191,9 @@ input:focus {
 /* center the placeholders */
 input::placeholder {
   text-align: center;
+}
+
+.tiles{
+    padding: 20px;
 }
 </style>

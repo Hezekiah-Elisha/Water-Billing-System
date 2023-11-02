@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import TestView from '../views/TestView.vue'
 import OneSupervisorViewVue from '@/views/OneSupervisorView.vue';
+import OneWorkerViewVue from '@/views/OneWorkerView.vue';
 
 
 function guardMyRoute (to, from, next){
@@ -67,6 +68,12 @@ const routes = [
     component: () => import('../views/SupervisorView.vue')
   },
   {
+    path: '/workers',
+    name: 'workers',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/WorkersView.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue')
@@ -76,6 +83,42 @@ const routes = [
     name: 'supervisor',
     beforeEnter: guardMyRoute,
     component: OneSupervisorViewVue
+  },
+  {
+    path: '/worker/:id',
+    name: 'worker',
+    beforeEnter: guardMyRoute,
+    component: OneWorkerViewVue
+  },
+  // {
+  //   path: '/customers',
+  //   name: 'customers',
+  //   beforeEnter: guardMyRoute,
+  //   component: () => import('../views/CustomersView.vue')
+  // },
+  {
+    path: '/meter-readings',
+    name: 'meterreadings',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/MeterReadingsView.vue')
+  },
+  {
+    path: '/notifications',
+    name: 'notifications',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/NotificationsView.vue')
+  },
+  {
+    path: '/bills',
+    name: 'bills',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/BillsView.vue')
+  },
+  {
+    path: '/meters',
+    name: 'meters',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/MetersView.vue')
   }
 ]
 

@@ -1,10 +1,14 @@
 <template>
     <div class="container">
-        <h2>Available Supervisors</h2>
+        <h2>Available workers</h2>
         <hr>
         <div class="row">
-            <div v-for="supervisor in supervisors" :key="supervisor.id" class="col-md-4 tiles">
-                <TileComponent :user="supervisor" />
+            <div v-for="worker in workers" :key="worker.id" class="col-md-4 tiles">
+                <WorkerTileComponent :user="worker">
+                    <div class="row">
+                        <RouterLink :to="{ name: 'worker', params: { id: worker.id } }" class="btn btn-info">View</RouterLink>
+                    </div>
+                </WorkerTileComponent>
             </div>
         </div>
 
@@ -13,17 +17,17 @@
 
 <script>
 
-import TileComponent from '@/components/TileComponent.vue'
+import WorkerTileComponent from '@/components/WorkerTileComponent.vue'
 import axios from 'axios'
 
 export default {
     name: 'SupervisorView',
     components: {
-        TileComponent
+        WorkerTileComponent
     },
     data() {
         return {
-            supervisors: [],
+            workers: [],
             user_id: '',
             phone: '',
             location: '',
@@ -36,7 +40,7 @@ export default {
     methods: {
         submit(){
 
-            axios.post('http://localhost:7000/supervisors', {
+            axios.post('http://localhost:7000/worker', {
                 user_id: this.user_id,
                 phone: this.phone,
                 location: this.location
@@ -58,16 +62,16 @@ export default {
         },
         loadUsers() {
             axios
-                .get('http://localhost:7000/auth/users/role/supervisor')
+                .get('http://localhost:7000/auth/users/role/worker')
                 .then(response => {
-                this.supervisors = response.data;
+                this.workers = response.data;
                 })
                 .catch(error => {
                 console.log(error);
                 });
         },
         getSupervisors() {
-            axios.get('http://localhost:7000/auth/users/role/supervisor')
+            axios.get('http://localhost:7000/auth/users/role/worker')
                 .then(response => {
                     console.log(response.data['username'])
                     return response.data['username']
@@ -77,7 +81,7 @@ export default {
                 })
         },
         completeSupervisor(user_id) {
-            axios.post('http://localhost:7000/supervisors/'+user_id,{
+            axios.post('http://localhost:7000/workers/'+user_id,{
                 username: this.username,
                 email: this.email,
                 password: this.password,
