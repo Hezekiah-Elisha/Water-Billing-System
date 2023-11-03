@@ -1,4 +1,9 @@
 <template>
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
+    </div>
+    <div class="col-md-10">
         Worker {{ $route.params.id }}
         <div class="row">
             <div class="col-md-6">
@@ -18,13 +23,19 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
 </template>
 <script>
 import axios from 'axios'
+import SideNav from '@/components/SideNav.vue';
 
 export default {
     name: 'OneWorkerView',
+    components: {
+        SideNav
+    },
     data() {
         return {
             worker: {}

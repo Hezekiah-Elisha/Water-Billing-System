@@ -1,76 +1,85 @@
 <template>
-    <!-- Supervisor {{ $route.params.id }} -->
-    <h2>Supervisor <span>{{ user.username }}</span></h2>
-    <hr>
-    <p>Email: {{ user.email }}</p>
-
-    <div v-if="isThere">
-        <p>Phone: {{ phone }}</p>
-        <p>Location: {{ location }}</p>
-
-        <h3>Assign Workers</h3>
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
+    </div>
+    <div class="col-md-10">
+        <!-- Supervisor {{ $route.params.id }} -->
+        <h2>Supervisor <span>{{ user.username }}</span></h2>
         <hr>
-        <table>
-            <thead>
-                <tr>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Role</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="worker in workers" :key="worker.id">
-                    <td>{{ worker.username }}</td>
-                    <td>{{ worker.email }}</td>
-                    <td>{{ worker.role }}</td>
-                    <td>
-                        
-                        <button @click="deleteWorker(worker.id)"
-                            class="btn btn-outline-danger">
-                            <i class="bi bi-trash2"></i>Delete
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <p>Email: {{ user.email }}</p>
 
-        <h3>Workers</h3>
-        <hr>
-        <div class="row">
-            <WorkerTileComponent v-for="worker in workers" :key="worker.id" :user="worker" class="col-md-4"/>
+        <div v-if="isThere">
+            <p>Phone: {{ phone }}</p>
+            <p>Location: {{ location }}</p>
+
+            <h3>Assign Workers</h3>
+            <hr>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="worker in workers" :key="worker.id">
+                        <td>{{ worker.username }}</td>
+                        <td>{{ worker.email }}</td>
+                        <td>{{ worker.role }}</td>
+                        <td>
+                            
+                            <button @click="deleteWorker(worker.id)"
+                                class="btn btn-outline-danger">
+                                <i class="bi bi-trash2"></i>Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Workers</h3>
+            <hr>
+            <div class="row">
+                <WorkerTileComponent v-for="worker in workers" :key="worker.id" :user="worker" class="col-md-4"/>
+            </div>
+        </div>
+
+        <div v-else>
+            <h3>Complete Supervisor Registration</h3>
+            <button class="btn action" @click="supervisorModal = true" > <i class="bi bi-pencil-fill"></i>Complete Supervisor Registration</button>
+            <WorkerComponent v-if="supervisorModal" @close="supervisorModal = false">
+                <h2>Create Supervisor</h2>
+                <hr>
+                <form @submit.prevent="submit">
+                    <!-- <label for="">Username</label> -->
+                    <input v-model="phone" type="number" placeholder="Phone Number" min="0">
+                    <!-- <label for="">Email</label> -->
+                    <input v-model="location" type="text" placeholder="Location">
+                    <!-- <label for="">Password</label> -->
+                    <button class="btn action">Complete registration</button>
+                </form>
+
+            </WorkerComponent>
         </div>
     </div>
-
-    <div v-else>
-        <h3>Complete Supervisor Registration</h3>
-        <button class="btn action" @click="supervisorModal = true" > <i class="bi bi-pencil-fill"></i>Complete Supervisor Registration</button>
-        <WorkerComponent v-if="supervisorModal" @close="supervisorModal = false">
-            <h2>Create Supervisor</h2>
-            <hr>
-            <form @submit.prevent="submit">
-                <!-- <label for="">Username</label> -->
-                <input v-model="phone" type="number" placeholder="Phone Number" min="0">
-                <!-- <label for="">Email</label> -->
-                <input v-model="location" type="text" placeholder="Location">
-                <!-- <label for="">Password</label> -->
-                <button class="btn action">Complete registration</button>
-            </form>
-
-        </WorkerComponent>
-    </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios'
 import WorkerComponent from '@/components/WorkerComponent.vue'
 import WorkerTileComponent from '@/components/WorkerTileComponent.vue'
+import SideNav from '@/components/SideNav.vue'
 
 export default {
     name : 'OneSupervisorView',
     components: {
         WorkerComponent,
-        WorkerTileComponent
+        WorkerTileComponent,
+        SideNav
     },
     data() {
         return {

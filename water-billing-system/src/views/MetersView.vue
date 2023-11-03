@@ -1,35 +1,42 @@
 <template>
-    <div class="d-flex justify-content-between top-head">
-        <h2>Meters Page</h2>
-        <button class="btn info" @click="meterModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
     </div>
-    <hr>
-
-    <!-- <hr> -->
-    <WorkerComponent v-if="meterModal" @close="meterModal = false">
-        <h2>Register meter</h2>
+    <div class="col-md-10">
+        <div class="d-flex justify-content-between top-head">
+            <h2>Meters Page</h2>
+            <button class="btn info" @click="meterModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
+        </div>
         <hr>
-        <form action="" class="">
-            <input type="text" v-model="meter_number" placeholder="Meter number">
-            <input type="text" v-model="meter_type" placeholder="Meter type">
-            <input type="datetime-local" v-model="installation_date" placeholder="Installation date">
-            <input type="text" v-model="gps_coordinates" placeholder="Map Co-ordinates">
-            <button class="btn btn-info">Add</button>
-        </form>
-    </WorkerComponent>
 
-    <div class="row">
-        <div v-if="meters.length > 0">
-            <div v-for="meter in meters" :key="meter.id" class="col-md-4">
-                <p><b>Meter Number: </b>{{ meter.meter_number  }}</p>
-                <p><b>Meter Type: </b>{{ meter.meter_type }}</p>
-                <p><b>Installation date: </b>{{ meter.installation_date }}</p>
+        <!-- <hr> -->
+        <WorkerComponent v-if="meterModal" @close="meterModal = false">
+            <h2>Register meter</h2>
+            <hr>
+            <form action="" class="">
+                <input type="text" v-model="meter_number" placeholder="Meter number">
+                <input type="text" v-model="meter_type" placeholder="Meter type">
+                <input type="datetime-local" v-model="installation_date" placeholder="Installation date">
+                <input type="text" v-model="gps_coordinates" placeholder="Map Co-ordinates">
+                <button class="btn btn-info">Add</button>
+            </form>
+        </WorkerComponent>
+
+        <div class="row">
+            <div v-if="meters.length > 0">
+                <div v-for="meter in meters" :key="meter.id" class="col-md-4">
+                    <p><b>Meter Number: </b>{{ meter.meter_number  }}</p>
+                    <p><b>Meter Type: </b>{{ meter.meter_type }}</p>
+                    <p><b>Installation date: </b>{{ meter.installation_date }}</p>
+                </div>
+            </div>
+            <div v-else>
+                <p class="text-danger"> {{ error }} </p>
             </div>
         </div>
-        <div v-else>
-            <p class="text-danger"> {{ error }} </p>
-        </div>
     </div>
+</div>
 
 
 
@@ -37,13 +44,15 @@
 
 <script>
 import WorkerComponent from '@/components/WorkerComponent.vue';
+import SideNav from '@/components/SideNav.vue';
 import axios from 'axios';
 
 
 export default {
     name: 'MetersView',
     components: {
-        WorkerComponent
+        WorkerComponent,
+        SideNav
     },
     data() {
         return {

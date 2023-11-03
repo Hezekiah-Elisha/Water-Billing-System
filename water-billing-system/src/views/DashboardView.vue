@@ -1,43 +1,53 @@
 <template>
 <!-- <div class="video">
 </div> -->
-<h2>
-    Welcome to the dashboard
-</h2>
-<hr>
-
-
-
-<div>
-    <img src="@/assets/male-profile-image-placeholder.png" alt="" class="profile-img">
-        <p>name : {{ user.username }} </p>
-        <p>email: {{ user.email }} </p>
-        <p>role: {{ user.role }} </p>
-        <p>created at: {{ formatDateTime(user.created_at) }} </p>
-    <div v-if="user.role == 'supervisor'">
-        You are a Supervisor
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
     </div>
-    <div v-else>
-        You are a user
+    <div class="col-md-10">
+        <InfoComponent info="Dashboard" />
+        <h2>
+            Welcome to the dashboard
+        </h2>
+        <hr>
+        <div>
+            <img src="@/assets/male-profile-image-placeholder.png" alt="" class="profile-img">
+                <p>name : {{ user.username }} </p>
+                <p>email: {{ user.email }} </p>
+                <p>role: {{ user.role }} </p>
+                <p>created at: {{ formatDateTime(user.created_at) }} </p>
+            <div v-if="user.role == 'supervisor'">
+                You are a Supervisor
+            </div>
+            <div v-else>
+                You are a user
+            </div>
+
+
+            <button @click="logout" class="btn btn-outline-danger"> <i class="bi bi-box-arrow-right"></i> Logout</button>
+        </div>
     </div>
 
-
-    <button @click="logout" class="btn btn-outline-danger"> <i class="bi bi-box-arrow-right"></i> Logout</button>
 </div>
 
+<hr>
 
 </template>
 
 <script>
 
+import SideNav from '@/components/SideNav.vue';
+import InfoComponent from '@/components/common/InfoComponent.vue';
 import axios from 'axios';
 
 
 export default {
     name: 'DashboardView',
-    // components: {
-    //   HelloWorld
-    // }
+    components: { 
+        SideNav, 
+        InfoComponent
+    },
     data() {
         return {
             token: localStorage.getItem('token'),
@@ -77,7 +87,7 @@ export default {
                     // console.log('success')
                     localStorage.removeItem('token');
                     localStorage.removeItem('user');
-                    this.$router.push('/');
+                    this.$router.push('/login');
                 }
             }).catch(error => {
                 console.log(error.code);
@@ -87,7 +97,7 @@ export default {
     mounted() {
         this.getProfile();
         this.formatDateTime();
-    },
+    }
 }
 
 </script>

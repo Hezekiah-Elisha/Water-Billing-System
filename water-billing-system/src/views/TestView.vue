@@ -1,4 +1,5 @@
 <template>
+    <InfoComponent info="Hey"/>
     <h1> API Version: </h1>
          <p><i class="bi bi-file-diff"></i> {{ message }}</p>
 
@@ -7,9 +8,13 @@
 <script>
 
 import axios from 'axios'
+import InfoComponent from '@/components/common/InfoComponent.vue'
 
 export default {
     name: 'TestView',
+    components: {
+        InfoComponent
+    },
     data() {
         return {
             message: ''

@@ -1,25 +1,34 @@
 <template>
-    <div class="container">
-        <h2>Available Supervisors</h2>
-        <hr>
-        <div class="row">
-            <div v-for="supervisor in supervisors" :key="supervisor.id" class="col-md-4 tiles">
-                <TileComponent :user="supervisor" />
-            </div>
-        </div>
-
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
     </div>
+    <div class="col-md-10">
+        <div class="container">
+            <h2>Available Supervisors</h2>
+            <hr>
+            <div class="row">
+                <div v-for="supervisor in supervisors" :key="supervisor.id" class="col-md-4 tiles">
+                    <TileComponent :user="supervisor" />
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
 
 import TileComponent from '@/components/TileComponent.vue'
 import axios from 'axios'
+import SideNav from '@/components/SideNav.vue'
 
 export default {
     name: 'SupervisorView',
     components: {
-        TileComponent
+        TileComponent,
+        SideNav
     },
     data() {
         return {

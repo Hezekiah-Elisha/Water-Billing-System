@@ -1,8 +1,9 @@
 <template>
     <div v-if="token != null">
         <nav>
-            <h2 class="company">Water Billing System</h2>
-            <h4>Welcome {{ username }} </h4>
+            <div class="side-head">
+                <h4 class="company">Water Billing System</h4>
+            </div>
             <router-link to="/"> <i class="bi bi-house-door-fill"></i> Home</router-link>
             <router-link to="/supervisors"> <i class="bi bi-award-fill"></i> Supervisors</router-link>
             <router-link to="/users"> <i class="bi bi-people-fill"></i> Users</router-link>
@@ -34,6 +35,15 @@ export default {
 </script>
 
 <style scoped>
+
+.side-head{
+    background-image: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    padding: 10px;
+    margin: 0;
+    text-align: center;
+
+}
+
 .company, h4{
     color: white;
 }
@@ -55,8 +65,10 @@ nav a{
 }
 
 nav a:hover{
-    color: var(--primary-color);
-    background-color: white;
+    /* color: var(--primary-color); */
+    color: white;
+    background-image: linear-gradient(to right, var(--primary-color), var(--secondary-color));
+    /* background-color: white; */
     border-radius: 100px 0px 0px 100px;
     transition: 0.8s;
     translate: 10px;

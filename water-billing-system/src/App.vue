@@ -1,9 +1,11 @@
 <template class="container-fluid">
 
-    <div v-if="info == true">
+  <RouterView/>
+
+
+    <!-- <div v-if="info == true">
       <main class="row">
         <aside class="col-md-2">
-          <SideNav/>
         </aside>
         <article class="col-md-10">
           <RouterView/>
@@ -12,15 +14,14 @@
     </div>
     <div v-else>
           <RouterView/>
-    </div>
+    </div> -->
 
 </template>
 
 <script>
 
-const title = "Water Billing System";
 
-import SideNav from './components/SideNav.vue';
+// import SideNav from './components/SideNav.vue';
 // import LoginView from './views/LoginView.vue';
 import axios from 'axios';
 
@@ -64,6 +65,7 @@ import axios from 'axios';
       }
     }
     const info = await checkTokenValidity();
+    console.log(info);
 
 
     // const info = await checkTokenValidity();
@@ -71,7 +73,7 @@ import axios from 'axios';
 
 export default {
   components : {
-    SideNav,
+    // SideNav,
     // LoginView
   },
   setup(){
@@ -117,7 +119,6 @@ export default {
     // console.log(token);
     return {
       info,
-      title,
     }
   },
 }

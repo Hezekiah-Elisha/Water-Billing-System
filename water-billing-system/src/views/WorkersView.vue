@@ -1,29 +1,38 @@
 <template>
-    <div class="container">
-        <h2>Available workers</h2>
-        <hr>
-        <div class="row">
-            <div v-for="worker in workers" :key="worker.id" class="col-md-4 tiles">
-                <WorkerTileComponent :user="worker">
-                    <div class="row">
-                        <RouterLink :to="{ name: 'worker', params: { id: worker.id } }" class="btn btn-info">View</RouterLink>
-                    </div>
-                </WorkerTileComponent>
-            </div>
-        </div>
-
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
     </div>
+    <div class="col-md-10">
+        <div class="container">
+            <h2>Available workers</h2>
+            <hr>
+            <div class="row">
+                <div v-for="worker in workers" :key="worker.id" class="col-md-4 tiles">
+                    <WorkerTileComponent :user="worker">
+                        <div class="row">
+                            <RouterLink :to="{ name: 'worker', params: { id: worker.id } }" class="btn btn-info">View</RouterLink>
+                        </div>
+                    </WorkerTileComponent>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 </template>
 
 <script>
 
 import WorkerTileComponent from '@/components/WorkerTileComponent.vue'
 import axios from 'axios'
+import SideNav from '@/components/SideNav.vue'
 
 export default {
     name: 'SupervisorView',
     components: {
-        WorkerTileComponent
+        WorkerTileComponent,
+        SideNav
     },
     data() {
         return {

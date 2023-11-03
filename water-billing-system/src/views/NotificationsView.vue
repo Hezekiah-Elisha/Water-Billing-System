@@ -1,50 +1,57 @@
 <template>
-    <!-- <hr> -->
-    <div class="d-flex justify-content-between top-head">
-        <h2><i class="bi bi-bell-fill"></i>Notifications</h2>
-        <button class="btn info" @click="notificationModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
+<div class="row">
+    <div class="col-md-2">
+        <SideNav/>
     </div>
-    
-    <!-- <hr> -->
-    <WorkerComponent v-if="notificationModal" @close="notificationModal = false">
-        <h2>Send Notification</h2>
-        <form @submit.prevent="submit" class="form">
-            <input v-model="message" type="text" placeholder="Message">
-            <select v-model="user_id" id="">
-                <option value="">Select Receiver</option>
-                <option v-for="user in allUsers" :key="user.id" value="{{user.id}}">{{ user.username }}</option>
-            </select>
-            <select v-model="type" id="">
-                <option value="">Select Type</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-            </select>
-            <button class="btn btn-info">Send</button>
-        </form>
-    </WorkerComponent>
+    <div class="col-md-10">
+        <!-- <hr> -->
+        <div class="d-flex justify-content-between top-head">
+            <h2><i class="bi bi-bell-fill"></i>Notifications</h2>
+            <button class="btn info" @click="notificationModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
+        </div>
+        
+        <!-- <hr> -->
+        <WorkerComponent v-if="notificationModal" @close="notificationModal = false">
+            <h2>Send Notification</h2>
+            <form @submit.prevent="submit" class="form">
+                <input v-model="message" type="text" placeholder="Message">
+                <select v-model="user_id" id="">
+                    <option value="">Select Receiver</option>
+                    <option v-for="user in allUsers" :key="user.id" value="{{user.id}}">{{ user.username }}</option>
+                </select>
+                <select v-model="type" id="">
+                    <option value="">Select Type</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+                <button class="btn btn-info">Send</button>
+            </form>
+        </WorkerComponent>
 
-    <h3>Send Notification</h3>
+        <h3>Send Notification</h3>
 
 
-    <div class="row">
-        <div class="col-md-4" v-for="notification in notifications" :key="notification.id">
-            <div class="card">
-                <div class="card-header">{{ notification.message }}</div>
-                <div class="card-body">
-                    <p><b>Time: </b>{{ notification.date }}</p>
-                    <p><b>Type: </b>{{ notification.type }}</p>
+        <div class="row">
+            <div class="col-md-4" v-for="notification in notifications" :key="notification.id">
+                <div class="card">
+                    <div class="card-header">{{ notification.message }}</div>
+                    <div class="card-body">
+                        <p><b>Time: </b>{{ notification.date }}</p>
+                        <p><b>Type: </b>{{ notification.type }}</p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
+</div>
 
 </template>
 
 <script>
     import WorkerComponent from '@/components/WorkerComponent.vue';
     import axios from 'axios';
+    import SideNav from '@/components/SideNav.vue';
 
     axios.defaults.baseURL = 'http://localhost:7000';
 
@@ -53,7 +60,8 @@
     export default {
         name: 'NotificationsView',
         components: {
-            WorkerComponent
+            WorkerComponent,
+            SideNav
         },
         data() {
             return {
