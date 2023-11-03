@@ -30,10 +30,14 @@ def create():
     notification_message = req_data['message']
     notification_viewed = req_data['viewed']
 
-    notification = Notification(user_id, notification_type, notification_date, notification_message, viewed=notification_viewed)
+    notification = Notification(user_id, type=notification_type, date=notification_date, message=notification_message, viewed=notification_viewed)
     notification.save()
-    result = notification_schema.dump(notification)
-    return jsonify(result), 201
+    # result = notification_schema.dump(notification)
+
+    all_notifications = Notification.get_all_notifications()
+    all_notifications = notifications_schema.dump(all_notifications)
+
+    return jsonify(message="Notification Sent", result=all_notifications), 201
 
 
 @notification.route('/<int:id>', methods=['GET'])

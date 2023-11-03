@@ -1,7 +1,4 @@
 <template>
-
-
-
 <!-- <div class="video">
 </div> -->
 <h2>

@@ -341,3 +341,9 @@ def get_users_by_role(role):
         return jsonify(message='Users in role not found'), 404
     result = users_schema.dump(users)
     return jsonify(result)
+
+
+@auth.route('/check-token', methods=['GET'])
+@jwt_required()
+def check_token():
+    return jsonify(True), 200

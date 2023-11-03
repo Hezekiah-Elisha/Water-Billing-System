@@ -8,7 +8,7 @@ ma = ma()
 class MeterSchema(ma.Schema):
     class Meta:
         model = Meter
-        fields = ('id', 'meter_number', 'meter_type', 'meter_size', 'meter_status', 'created_at')
+        fields = ('id', 'meter_number', 'meter_type', 'installation_date', 'created_at')
 
         _links = ma.Hyperlinks({
             'self': ma.URLFor('meter_details', values=dict(id='<id>')),

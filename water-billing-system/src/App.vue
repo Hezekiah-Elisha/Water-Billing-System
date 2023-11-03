@@ -1,60 +1,125 @@
 <template class="container-fluid">
-  <!-- <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link> |
-    <router-link to="/test">Test</router-link>
-  </nav> -->
 
-  <!-- <div v-if="token == null"> -->
-    <!-- <LoginView/> -->
-    <!-- hhaha -->
-  <!-- </div> -->
-  <!-- <div v-else> -->
-    <!-- <div v-if="token == null">
-      <LoginView/>
+    <div v-if="info == true">
+      <main class="row">
+        <aside class="col-md-2">
+          <SideNav/>
+        </aside>
+        <article class="col-md-10">
+          <RouterView/>
+        </article>
+      </main>
+    </div>
+    <div v-else>
+          <RouterView/>
     </div>
 
-    <div v-else>
-      Vijana
-    </div> -->
-
-    <main class="row">
-      <aside class="col-md-2">
-        <SideNav/>
-      </aside>
-      <article class="col-md-10">
-        <RouterView/>
-      </article>
-    </main>
-
-
-  <!-- </div> -->
-  <!-- <router-view/> -->
-  <!-- <div v-if="token != null">
-      <router-view/>
-  </div>
-  <div v-else>
-     haha
-  </div> -->
 </template>
 
 <script>
 
+const title = "Water Billing System";
+
 import SideNav from './components/SideNav.vue';
 // import LoginView from './views/LoginView.vue';
+import axios from 'axios';
+
+    // Function to check if the token is still valid
+    async function isTokenValid() {
+      const token = localStorage.getItem('token'); // Retrieve the JWT token from local storage
+      if (!token) {
+        return false; // Token is not available, so it's not valid
+      }
+
+      try {
+        // Send a request to a Flask endpoint to validate the token
+        const response = await axios.get('/auth/check-token', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (response.status === 200) {
+          return true; // Token is valid
+        } else {
+          return false;
+        }
+      } catch (error) {
+        console.error('Token validation failed:', error);
+        return false
+      }
+
+      // return false; // Token is invalid
+    }
+
+        // Example usage
+    async function checkTokenValidity() {
+      const isValid = await isTokenValid();
+      if (isValid) {
+        // Token is still valid
+        return true;
+      } else {
+        // Token is invalid, handle the re-authentication or redirect the user to login
+        return false;
+      }
+    }
+    const info = await checkTokenValidity();
+
+
+    // const info = await checkTokenValidity();
+    // console.log(await checkTokenValidity());
 
 export default {
   components : {
     SideNav,
     // LoginView
   },
-  setup() {
-    const token = localStorage.getItem('token');
-    console.log(token);
+  setup(){
+    // async function isTokenValid() {
+    //   const token = localStorage.getItem('token'); // Retrieve the JWT token from local storage
+    //   if (!token) {
+    //     return false; // Token is not available, so it's not valid
+    //   }
+
+    //   try {
+    //     // Send a request to a Flask endpoint to validate the token
+    //     const response = await axios.get('/auth/check-token', {
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     });
+
+    //     if (response.status === 200) {
+    //       return true; // Token is valid
+    //     }
+    //   } catch (error) {
+    //     console.error('Token validation failed:', error);
+    //   }
+
+    //   return false; // Token is invalid
+    // }
+
+    //     // Example usage
+    // async function checkTokenValidity() {
+    //   const isValid = await isTokenValid();
+    //   if (isValid) {
+    //     // Token is still valid
+    //     return true;
+    //   } else {
+    //     // Token is invalid, handle the re-authentication or redirect the user to login
+    //     return false;
+    //   }
+    // }
+
+
+
+    // const token = localStorage.getItem('token');
+    // console.log(token);
     return {
-      token
+      info,
+      title,
     }
-  }
+  },
 }
 
 </script>
