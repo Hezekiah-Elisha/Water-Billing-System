@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, timezone
 import os
 from werkzeug.utils import secure_filename
 from werkzeug.exceptions import RequestEntityTooLarge
+from ..billing.models.Bill import Bill
 
 
 now = datetime.now()
@@ -133,6 +134,14 @@ def create_meter_reading():
 
     info = meter_reading.save()
 
+    meter_reading_ish = MeterReading.get_month_and_year(reading_date)
+
+    units = MeterReading.get_reading_units_given_month(meter_id, meter_reading_ish[0], meter_reading_ish[1])
+    
+    billing = Bill(meter_id=meter_id, units=units, status='unpaid')
+
+    billing.save()
+
     # result = meter_reading_schema.dump(meter_reading)
 
     return jsonify(result=info), 201
@@ -179,6 +188,7 @@ def get_meter_reading_value(meter_id, year, month):
         return jsonify(message='No meter readings found'), 404
 
     return jsonify(reading_value=meter_readings), 200
+
 
 
 @readings.route('/units/<int:meter_id>/<int:year>/<int:month>', methods=['GET'])

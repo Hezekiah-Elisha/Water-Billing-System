@@ -1,6 +1,6 @@
 class WaterConstants:
-    METER_RENT = 204.0
-    SEWER_CHARGE = 153.0
+    METER_RENT = 204
+    SEWER_CHARGE = 153
     CONSUMPTION_CHARGE = 0.5
 
     # setters and getters

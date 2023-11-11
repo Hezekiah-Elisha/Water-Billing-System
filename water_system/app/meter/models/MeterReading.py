@@ -119,6 +119,12 @@ class MeterReading(db.Model):
 
         return info.reading_value
     
+
+    # get month and year from a date
+    @staticmethod
+    def get_month_and_year(date):
+        return date.month, date.year
+    
     
     @staticmethod
     def get_reading_units_given_month(meter_id, month, year):
