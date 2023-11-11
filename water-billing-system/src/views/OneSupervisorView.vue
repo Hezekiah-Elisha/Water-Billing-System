@@ -15,30 +15,20 @@
 
             <h3>Assign Workers</h3>
             <hr>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="worker in workers" :key="worker.id">
-                        <td>{{ worker.username }}</td>
-                        <td>{{ worker.email }}</td>
-                        <td>{{ worker.role }}</td>
-                        <td>
-                            
-                            <button @click="deleteWorker(worker.id)"
-                                class="btn btn-outline-danger">
-                                <i class="bi bi-trash2"></i>Delete
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="row tiles workers">
+                <div v-for="worker in workers" :key="worker.id" class="col-md-4">
+                    <h4>{{ worker.username }}</h4>
+                    <hr>
+                    <p>{{ worker.email }}</p>
+                    <p>{{ worker.role }}</p>
+                    <button @click="deleteWorker(worker.id)"
+                                    class="btn btn-outline-warning">
+                        <i class="bi bi-person-fill-add"></i> Self Assign
+                    </button>
+
+                </div>
+            </div>
+
 
             <h3>Workers</h3>
             <hr>
@@ -204,5 +194,17 @@ input::placeholder {
 
 .tiles{
     padding: 20px;
+}
+.workers div{
+    /* margin: 5px; */
+    padding: 10px;
+    border: 1px solid #001f3f;
+    border-radius: 5px;
+    background-color: #001f3f;
+    color: #fff;
+}
+
+.workers div h4{
+    text-transform: capitalize;
 }
 </style>

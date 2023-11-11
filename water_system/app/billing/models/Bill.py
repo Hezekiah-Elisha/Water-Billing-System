@@ -38,7 +38,7 @@ class Bill(db.Model):
         waterConstants = WaterConstants()
         # self.units = self.units + waterConstants.METER_RENT + waterConstants.SEWER_CHARGE + (waterConstants.CONSUMPTION_CHARGE * waterConstants.CONSUMPTION_CHARGE)
         temp_amount = self.units * int(waterConstants.CONSUMPTION_CHARGE)
-        print(f"================>{self}")
+        # print(f"================>{self}")
         self.amount = int(temp_amount) + waterConstants.METER_RENT + waterConstants.SEWER_CHARGE
         db.session.add(self)
         db.session.commit()

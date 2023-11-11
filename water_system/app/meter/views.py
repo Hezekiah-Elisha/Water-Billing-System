@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, send_from_directory
 from . import meter, readings
 from flask_jwt_extended import jwt_required
 from ..decorators import admin_required, supervisor_required, worker_required
@@ -138,6 +138,22 @@ def create_meter_reading():
     return jsonify(result=info), 201
 
 
+# delete all meter readings
+@readings.route('/', methods=['DELETE'])
+def delete_all_meter_readings():
+    meter_readings = MeterReading.get_all()
+    if not meter_readings:
+        return jsonify(message='No meter readings found'), 404
+    for meter_reading in meter_readings:
+        meter_reading.delete()
+
+    readings = MeterReading.get_all()
+    if readings:
+        return jsonify(message='Failed to delete all meter readings'), 500
+
+    return jsonify(message='All meter readings deleted', readings=readings), 200
+
+
 @readings.route('/<int:meter_id>', methods=['GET'])
 def get_meter_readings(meter_id):
     meter_readings = MeterReading.get_by_meter_id(meter_id)
@@ -172,3 +188,7 @@ def units(meter_id, year, month):
         return jsonify(message='No meter readings found'), 404
     return jsonify(units=units), 200
 
+
+@readings.route('uploads/<filename>', methods=['GET'])
+def uploaded_file(filename):
+    return send_from_directory(upload_folder, filename)

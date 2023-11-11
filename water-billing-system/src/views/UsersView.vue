@@ -162,7 +162,7 @@ export default {
                 role: 'supervisor'
             })
             .then(response => {
-                this.users = response.data('users')
+                this.users = response.data['users']
             })
             .catch(error => {
                 console.log(error)

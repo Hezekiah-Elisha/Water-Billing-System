@@ -62,6 +62,11 @@ class Worker(db.Model):
     def get_worker_by_id(id):
         return Worker.query.get(id)
     
+
+    @staticmethod
+    def get_worker_by_user_id(user_id):
+        return Worker.query.filter_by(user_id=user_id).first()
+    
     
     # get workers with same supervisor
     @staticmethod

@@ -65,12 +65,16 @@ class MeterReading(db.Model):
 
 
         db.session.add(self)
+        db.session.commit()
 
-        # calculate bill
-        if MeterReading.calculate_bill(self.meter_id, self.reading_date.month, self.reading_date.year):
-            db.session.commit()
-            return "Meter reading added successfully"
-        return "Meter reading added successfully but bill not calculated"
+        return "Meter Reading added successfully"
+
+
+        # # calculate bill
+        # if MeterReading.calculate_bill(self.meter_id, self.reading_date.month, self.reading_date.year):
+        #     db.session.commit()
+        #     return "Meter reading added successfully"
+        # return "Meter reading added successfully but bill not calculated"
 
 
     
@@ -148,3 +152,4 @@ class MeterReading(db.Model):
         bill = Bill(meter_id, units, 'unpaid')
         bill.save()
         return True
+    

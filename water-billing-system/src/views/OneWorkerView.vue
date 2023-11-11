@@ -38,7 +38,8 @@ export default {
     },
     data() {
         return {
-            worker: {}
+            worker: {},
+            isThere: false
         }
     },
     methods: {
@@ -52,10 +53,31 @@ export default {
                 .catch(error => {
                 console.log(error);
                 });
+        },
+        checkWorker(){
+            axios
+                .get('workers/'+this.$route.params.id)
+                .then(response => {
+                    if (response.data["message"] == "Worker does not exist"){
+                        this.isThere = false
+                        console.log(this.isThere);
+                    }
+                    else{
+                        this.isThere = true
+                        console.log(this.isThere);
+                    }
+                // this.worker = response.data[];
+                console.log(response.data)
+                })
+                .catch(error => {
+                    console.log(error);
+                console.log(`Heeh ${error}`);
+                });
         }
     },
     mounted() {
         this.loadWorker()
+        this.checkWorker()
     }
 }
 

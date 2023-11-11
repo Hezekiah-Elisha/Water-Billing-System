@@ -18,7 +18,7 @@ def test():
 
 @worker.route('/workers/<int:worker_id>', methods=['GET'])
 def get_worker(worker_id):
-    worker = Worker.get_worker_by_id(worker_id)
+    worker = Worker.get_worker_by_user_id(worker_id)
     if not worker:
         return jsonify(message='Worker not found'), 404
     result = worker_schema.dump(worker)
