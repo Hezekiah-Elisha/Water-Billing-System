@@ -123,6 +123,16 @@ def protected():
     return jsonify(logged_in_as=current_user), 200
 
 
+@auth.route('/role', methods=['GET'])
+@jwt_required()
+def get_role():
+    email = get_jwt_identity()
+    role = User.get_role(email)
+    if not role:
+        return jsonify(message='User not found'), 404
+    return jsonify(role=role), 200
+
+
 @users.route('/<int:id>', methods=['GET'])
 # @jwt_required()
 def get_user_by_id(id):

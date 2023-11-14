@@ -7,7 +7,7 @@
         <!-- <hr> -->
         <div class="d-flex justify-content-between top-head">
             <h2><i class="bi bi-bell-fill"></i>Notifications</h2>
-            <button class="btn info" @click="notificationModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
+            <button v-if="user.role == 'supervisor'" class="btn info" @click="notificationModal = true" > <i class="bi bi-pencil-fill"></i>Register meter</button>
         </div>
         
         <!-- <hr> -->
@@ -67,6 +67,7 @@
             return {
                 notifications: [],
                 allUsers: [],
+                user: JSON.parse(localStorage.getItem('user')),
                 message: '',
                 type: '',
                 user_id: '',
