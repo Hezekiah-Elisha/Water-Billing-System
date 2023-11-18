@@ -14,7 +14,7 @@
       <div class="nav">
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Welcome {{ username }}
+            Welcome {{ user['username'] }}
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="#">Profile</a></li>
@@ -45,19 +45,10 @@ export default{
     },
     data() {
         return {
-            username: null
+            user: JSON.parse(localStorage.getItem('user')),
         }
     },
     methods: {
-        getUsername(){
-            axios.get('auth/users/username')
-            .then(response => {
-                this.username = response.data["username"];
-            })
-            .catch(error => {
-                console.log(error);
-            })
-        },
         logout() {
             // const config = {
             //     headers: {
@@ -77,9 +68,6 @@ export default{
                 console.log(error.code);
             });
         }
-    },
-    mounted() {
-        this.getUsername();
     }
 }
 
