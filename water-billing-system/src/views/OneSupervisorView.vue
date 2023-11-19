@@ -84,7 +84,7 @@ export default {
     methods: {
         loadUser() {
             axios
-                .get('http://localhost:7000/auth/users/'+this.$route.params.id)
+                .get('auth/users/'+this.$route.params.id)
                 .then(response => {
                 this.user = response.data;
                 // console.log(response.data)
@@ -94,7 +94,7 @@ export default {
                 });
         },
         submit() {
-            axios.post('http://localhost:7000/supervisors', {
+            axios.post('supervisors', {
                 user_id: this.$route.params.id,
                 phone: this.phone,
                 location: this.location

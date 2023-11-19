@@ -22,7 +22,7 @@ export default {
     },
     methods: {
         async getVersion() {
-            const response = await axios.get('http://localhost:7000/version')
+            const response = await axios.get('version')
             this.message = response.data['version']
         }
     },

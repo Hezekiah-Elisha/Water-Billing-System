@@ -112,7 +112,7 @@ export default {
     },
     methods: {
         deleteUsers(){
-            axios.delete('http://localhost:7000/users')
+            axios.delete('husers')
             .then(response => {
                 this.users = response.data
             })
@@ -121,7 +121,7 @@ export default {
             })
         },
         deleteUser(id) {
-            axios.delete(`http://localhost:7000/auth/users/${id}`)
+            axios.delete(`auth/users/${id}`)
             .then(response => {
                 this.users = response.data['users']
                 console.log(response.data)
@@ -132,7 +132,7 @@ export default {
         },
         loadUsers() {
             axios
-                .get('http://localhost:7000/auth/users')
+                .get('auth/users')
                 .then(response => {
                 this.users = response.data;
                 })
@@ -141,7 +141,7 @@ export default {
                 });
         },
         createWorker() {
-            axios.post('http://localhost:7000/auth',{
+            axios.post('auth',{
                 username: this.username,
                 email: this.email,
                 password: this.password,
@@ -155,7 +155,7 @@ export default {
             })
         },
         createSupervisor() {
-            axios.post('http://localhost:7000/auth',{
+            axios.post('auth',{
                 username: this.username,
                 email: this.email,
                 password: this.password,

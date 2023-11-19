@@ -96,6 +96,27 @@ def get_meter_by_id(meter_id):
     return jsonify(result), 200
 
 
+@meter.route('/<int:meter_id>', methods=['PUT'])
+def update_meter_by_id(meter_id):
+    meter = Meter.get_by_id(meter_id)
+    if not meter:
+        return jsonify(message='No meter found'), 404
+    data = request.get_json()
+    for key, value in data.items():
+        setattr(meter, key, value)
+    meter.update()
+    return jsonify(message='Meter updated successfully'), 200
+
+
+@meter.route('/<int:meter_id>', methods=['DELETE'])
+def delete_meter_by_id(meter_id):
+    meter = Meter.get_by_id(meter_id)
+    if not meter:
+        return jsonify(message='No meter found'), 404
+    meter.delete()
+    return jsonify(message='Meter deleted successfully'), 200
+
+
 """
 meter reading class routes
 """

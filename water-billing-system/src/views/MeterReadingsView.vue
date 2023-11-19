@@ -11,7 +11,7 @@
             <div v-for="meterReading in meterReadings" :key="meterReading.id" class="col-md-4 info">
                 <h4>{{ meter_info(meterReading.meter_id) }}</h4>
                 <hr>
-                <img :src="'http://localhost:7000/meters/readings/uploads/'+meterReading.reading_image" class="img-fluid" :alt="meterReading.reading_image">
+                <img :src="'meters/readings/uploads/'+meterReading.reading_image" class="img-fluid" :alt="meterReading.reading_image">
                 <p>Reading: {{ meterReading.reading_value }}</p>
                 <p> <i class="bi bi-geo-alt-fill"></i> {{ meterReading.reading_gps_coordinates }}</p>
                 <p> <i class="bi bi-calendar-fill"></i> {{ meterReading.reading_date }}</p>

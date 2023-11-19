@@ -61,7 +61,7 @@ export default {
                     Authorization: `Bearer ${this.token}`
                 }
             };
-            axios.get('http://localhost:7000/auth/users/profile', config)
+            axios.get('auth/users/profile', config)
                 .then(response => {
                 // console.log(response.data)
                 this.user = response.data;
@@ -80,7 +80,7 @@ export default {
                     Authorization: `Bearer ${this.token}`
                 }
             };
-            axios.delete('http://localhost:7000/auth/logout', config)
+            axios.delete('auth/logout', config)
                 .then(response => {
                 // console.log(response.data)
                 if (response.status === 200) {

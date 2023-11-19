@@ -32,9 +32,13 @@
             <div v-if="meters.length > 0" class="row">
                 <div v-for="meter in meters" :key="meter.id" class="col-md-4">
                     <p><b>Meter Number: </b>{{ meter.meter_number  }}</p>
-                    <p><b>Customer: </b> None of ID _{{ meter.customer_id }}</p>
+                    <p><b>Customer: </b> None of ID _{{ meter.customer_id }}  {{ this.getCustomerByID(meter.customer_id) }}</p>
                     <p><b>Meter Type: </b>{{ meter.meter_type }}</p>
                     <p><b>Installation date: </b>{{ meter.installation_date }}</p>
+                    <p><b>GPS Coordinates: </b>{{ meter.gps_coordinates }}</p>
+                    <button @click="
+                        deleteMeter(meter.id);
+                    " class="btn btn-danger">Delete <i class="bi bi-trash2"></i></button>
                 </div>
             </div>
             <div v-else>
@@ -71,7 +75,7 @@ export default {
             gps_coordinates: '',
             meterModal: false,
             customers: [],
-            customer: []
+            customer_name: null
         };
     },
     methods: {
@@ -124,11 +128,24 @@ export default {
                 console.log(error);
             })
         },
-        getCustomerByID(id){
-            axios.get(`customers/${id}`)
+        async getCustomerByID(id){
+            // axios.get(`customers/${id}`)
+            // .then(response => {
+            //     console.log(response.data.name);
+            //     return response.data.name;
+            // })
+            // .catch(error => {
+            //     console.log(error);
+            // })
+            const response = await axios.get(`customers/${id}`);
+            console.log(response.data.name);
+            return response.data.name;
+        },
+        deleteMeter(id){
+            axios.delete(`meters/${id}`)
             .then(response => {
-                this.customer = response.data;
-                console.log(this.customer)
+                console.log(response.data);
+                this.getMeters();
             })
             .catch(error => {
                 console.log(error);
@@ -138,8 +155,7 @@ export default {
     mounted() {
         this.getMeters();
         this.getAllCustomers();
-        this.getCustomerByID(3);
-    }
+    },
 
 }
 

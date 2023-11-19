@@ -45,7 +45,7 @@ export default {
     methods: {
         loadWorker() {
             axios
-                .get('http://localhost:7000/auth/users/'+this.$route.params.id)
+                .get('auth/users/'+this.$route.params.id)
                 .then(response => {
                 this.worker = response.data;
                 console.log(response.data)

@@ -27,7 +27,7 @@ export default {
   },
   methods: {
     submit() {
-      axios.post('http://localhost:7000/auth/login', {
+      axios.post('auth/login', {
         email: this.email,
         password: this.password
       })

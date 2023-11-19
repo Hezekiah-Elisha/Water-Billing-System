@@ -49,7 +49,7 @@ export default {
     methods: {
         submit(){
 
-            axios.post('http://localhost:7000/worker', {
+            axios.post('worker', {
                 user_id: this.user_id,
                 phone: this.phone,
                 location: this.location
@@ -71,7 +71,7 @@ export default {
         },
         loadUsers() {
             axios
-                .get('http://localhost:7000/auth/users/role/worker')
+                .get('auth/users/role/worker')
                 .then(response => {
                 this.workers = response.data;
                 })
@@ -80,7 +80,7 @@ export default {
                 });
         },
         getSupervisors() {
-            axios.get('http://localhost:7000/auth/users/role/worker')
+            axios.get('auth/users/role/worker')
                 .then(response => {
                     console.log(response.data['username'])
                     return response.data['username']
@@ -90,7 +90,7 @@ export default {
                 })
         },
         completeSupervisor(user_id) {
-            axios.post('http://localhost:7000/workers/'+user_id,{
+            axios.post('workers/'+user_id,{
                 username: this.username,
                 email: this.email,
                 password: this.password,
