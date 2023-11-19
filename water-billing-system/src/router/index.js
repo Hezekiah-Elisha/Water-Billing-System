@@ -90,12 +90,12 @@ const routes = [
     beforeEnter: guardMyRoute,
     component: OneWorkerViewVue
   },
-  // {
-  //   path: '/customers',
-  //   name: 'customers',
-  //   beforeEnter: guardMyRoute,
-  //   component: () => import('../views/CustomersView.vue')
-  // },
+  {
+    path: '/customers',
+    name: 'customers',
+    beforeEnter: guardMyRoute,
+    component: () => import('../views/CustomersView.vue')
+  },
   {
     path: '/meter-readings',
     name: 'meterreadings',

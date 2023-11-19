@@ -12,6 +12,7 @@
                 <router-link to="/bills"> <i class="bi bi-cash-coin"></i> Bills</router-link>
                 <router-link to="/meters"> <i class="bi bi-arrow-up-right-square-fill"></i> Meter</router-link>
                 <router-link to="/meter-readings"> <i class="bi bi-speedometer2"></i> Meter Readings</router-link>
+                <router-link to="/customers"> <i class="bi bi-cash-stack"></i> Customers</router-link>
             </div>
 
             <router-link to="/notifications"> <i class="bi bi-bell-fill"></i> Notifications</router-link>

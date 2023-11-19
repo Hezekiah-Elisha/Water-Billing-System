@@ -56,7 +56,6 @@ def get_all_meters():
     return jsonify(result), 200
 
 
-
 @meter.route('/', methods=['POST'])
 def create_meter():
     json_data = request.get_json()
@@ -71,14 +70,19 @@ def create_meter():
     meter_number = json_data['meter_number']
     meter_type = json_data['meter_type']
     installation_date = datetime.strptime(json_data['installation_date'], '%Y-%m-%d %H:%M:%S')
+    # installation_date = json_data['installation_date']
     gps_coordinates = json_data['gps_coordinates']
     customer_id = json_data['customer_id']
 
     meter = Meter(customer_id=customer_id, meter_number=meter_number, meter_type=meter_type, installation_date=installation_date, gps_coordinates=gps_coordinates)
 
     meter.save()
+    
+    meters = Meter.get_all()
+    if not meters:
+        return jsonify(message='No meters found'), 404
+    result = meters_schema.dump(meters)
 
-    result = meter_schema.dump(meter)
 
     return jsonify(result), 201
 
