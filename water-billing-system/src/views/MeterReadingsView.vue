@@ -11,7 +11,7 @@
             <div v-for="meterReading in meterReadings" :key="meterReading.id" class="col-md-4 info">
                 <h4>{{ meter_info(meterReading.meter_id) }}</h4>
                 <hr>
-                <img :src="'meters/readings/uploads/'+meterReading.reading_image" class="img-fluid" :alt="meterReading.reading_image">
+                <img :src="'https://hezekiahelisha.pythonanywhere.com/meters/readings/uploads/'+meterReading.reading_image" class="img-fluid" :alt="meterReading.reading_image">
                 <p>Reading: {{ meterReading.reading_value }}</p>
                 <p> <i class="bi bi-geo-alt-fill"></i> {{ meterReading.reading_gps_coordinates }}</p>
                 <p> <i class="bi bi-calendar-fill"></i> {{ meterReading.reading_date }}</p>
@@ -70,11 +70,10 @@ export default {
             axios
                 .delete('meters/readings')
                 .then(response => {
-                this.meterReadings = response.data["readings"];
-                console.log(response.data)
-                })
-                .catch(error => {
-                console.log(error);
+                    this.meterReadings = response.data["readings"];
+                    console.log(response.data)
+                }).catch(error => {
+                    console.log(error);
                 });
         }
     },
